@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -16,9 +16,9 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        return response()->json(Project::all(), 200);        
+        return response()->json(Project::all(), 200);
     }
-/**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -31,15 +31,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info('Incoming request:', $request->all());
 
-        $validator = Validator::make($request->all(),
-        [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'description' => 'nullable|string',
-            'due_date' => 'nullable|date'
+            'due_date' => 'nullable|date',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()
@@ -74,7 +73,7 @@ class ProjectController extends Controller
     public function edit(string $id)
     {
         //
-        
+
     }
 
     /**
@@ -83,13 +82,15 @@ class ProjectController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $validator = Validator::make($request->all(),
-        [
-            'name' => 'required|max:255',
-            'description' => 'nullable|string',
-            'due_date' => 'nullable|date'
-        ]);
-        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255',
+                'description' => 'nullable|string',
+                'due_date' => 'nullable|date'
+            ]
+        );
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => $validator->errors()
@@ -102,7 +103,7 @@ class ProjectController extends Controller
             return response()->json([
                 'message' => 'Project not found'
             ], 404);
-        }       
+        }
 
         $project->name = $request->name;
         $project->description = $request->description;
