@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Models\Project;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
+
 
 class ProjectController extends Controller
 {
@@ -16,8 +18,7 @@ class ProjectController extends Controller
         //
         return response()->json(Project::all(), 200);        
     }
-
-    /**
+/**
      * Show the form for creating a new resource.
      */
     public function create()
